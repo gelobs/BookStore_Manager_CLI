@@ -79,12 +79,22 @@ export class LivroService {
     if (!livro) {
       throw new Error(`Livro com ID ${id} não encontrado.`);
     }
-    const temEmprestimos = await this.repository.possuiEmprestimosAtivos(id);
-    if (temEmprestimos) {
+
+    const temEmprestimosAtivos = await this.repository.possuiEmprestimosAtivos(id);
+    if (temEmprestimosAtivos) {
       throw new Error(
         'Não é possível remover este livro pois ele possui empréstimos ativos.'
       );
     }
+
+    const temHistorico = await this.repository.possuiEmprestimos(id);
+    if (temHistorico) {
+      throw new Error(
+        'Não é possível remover este livro pois ele possui histórico de empréstimos. ' +
+        'A remoção quebraria o registro de empréstimos anteriores.'
+      );
+    }
+
     await this.repository.remover(id);
   }
 }
