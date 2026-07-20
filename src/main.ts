@@ -1,6 +1,7 @@
 import { conectarBancoDados } from './database/connection';
 import { exibirMenuPrincipal } from './menus/mainMenu';
 
+
 async function main(): Promise<void> {
   console.log('\n========================================');
   console.log('  *****  Bookstore Manager CLI  *****');
