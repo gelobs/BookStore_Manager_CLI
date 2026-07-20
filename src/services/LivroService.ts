@@ -87,12 +87,11 @@ export class LivroService {
       );
     }
 
+    // Remove o histórico de empréstimos já devolvidos antes de excluir o livro,
+    // evitando violação da restrição de chave estrangeira (ON DELETE RESTRICT).
     const temHistorico = await this.repository.possuiEmprestimos(id);
     if (temHistorico) {
-      throw new Error(
-        'Não é possível remover este livro pois ele possui histórico de empréstimos. ' +
-        'A remoção quebraria o registro de empréstimos anteriores.'
-      );
+      await this.repository.removerHistoricoDeEmprestimos(id);
     }
 
     await this.repository.remover(id);
