@@ -105,4 +105,11 @@ export class LivroRepository {
     );
     return parseInt(resultado.rows[0].count, 10) > 0;
   }
+
+  async removerHistoricoDeEmprestimos(id: number): Promise<void> {
+    await pool.query(
+      'DELETE FROM emprestimos WHERE livro_id = $1',
+      [id]
+    );
+  }
 }
