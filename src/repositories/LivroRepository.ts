@@ -97,4 +97,12 @@ export class LivroRepository {
     );
     return parseInt(resultado.rows[0].count, 10) > 0;
   }
+
+  async possuiEmprestimos(id: number): Promise<boolean> {
+    const resultado = await pool.query(
+      'SELECT COUNT(*) FROM emprestimos WHERE livro_id = $1',
+      [id]
+    );
+    return parseInt(resultado.rows[0].count, 10) > 0;
+  }
 }
